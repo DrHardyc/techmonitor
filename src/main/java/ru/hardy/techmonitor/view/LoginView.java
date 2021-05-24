@@ -1,5 +1,6 @@
 package ru.hardy.techmonitor.view;
 
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.StyleSheet;
@@ -26,14 +27,19 @@ public class LoginView extends Div {
                 username,
                 password,
 
-                new Button("Вход", event -> {
-                    try {
-                        authService.authenticate(username.getValue(), password.getValue());
-                        UI.getCurrent().navigate("home");
-                    } catch (AuthService.AuthException e) {
-                        Notification.show("Неверное имя пользователя или пароль");
-                    }
+                new Button("Вход", e -> {
+                    Login(authService, username.getValue(), password.getValue());
                 })
         );
+    }
+
+    private void Login(AuthService authService, String username, String password){
+
+        try {
+            authService.authenticate(username, password);
+            UI.getCurrent().navigate("home");
+        } catch (AuthService.AuthException e) {
+            Notification.show("Неверное имя пользователя или пароль");
+        }
     }
 }

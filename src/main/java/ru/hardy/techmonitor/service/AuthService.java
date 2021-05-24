@@ -9,13 +9,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.hardy.techmonitor.domain.Employee;
 import ru.hardy.techmonitor.domain.Role;
 import ru.hardy.techmonitor.domain.User;
 import ru.hardy.techmonitor.repo.UserRepo;
-import ru.hardy.techmonitor.view.AdminView;
-import ru.hardy.techmonitor.view.HomeView;
-import ru.hardy.techmonitor.view.LogoutView;
-import ru.hardy.techmonitor.view.MainView;
+import ru.hardy.techmonitor.view.*;
 
 
 import java.util.ArrayList;
@@ -70,6 +68,8 @@ public class AuthService {
         if(roles.contains(Role.USER)){
             routes.add(new AuthorizeRoutes("home", "Home", HomeView.class));
             routes.add(new AuthorizeRoutes("logout", "Logout", LogoutView.class));
+            routes.add(new AuthorizeRoutes("employee", "Employee", EmployeeView.class));
+
         }
 
         return routes;

@@ -18,7 +18,10 @@ public class Employee {
     private String surname;
     private String patronymic;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Vacation> vacation = new ArrayList<>();
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private User user;
 }
