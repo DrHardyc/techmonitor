@@ -1,7 +1,6 @@
 package ru.hardy.techmonitor.service;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.server.VaadinSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.hardy.techmonitor.domain.Employee;
 import ru.hardy.techmonitor.domain.Role;
 import ru.hardy.techmonitor.domain.User;
 import ru.hardy.techmonitor.repo.UserRepo;
 import ru.hardy.techmonitor.view.*;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,15 +58,16 @@ public class AuthService {
     public List<AuthorizeRoutes> getAuthorizedRoutes(Set<Role> roles){
         var routes = new ArrayList<AuthorizeRoutes>();
 
-        if(roles.contains(Role.ADMIN)) {
-            routes.add(new AuthorizeRoutes("admin", "Admin", AdminView.class));
-        }
-
         if(roles.contains(Role.USER)){
             routes.add(new AuthorizeRoutes("home", "Home", HomeView.class));
-            routes.add(new AuthorizeRoutes("logout", "Logout", LogoutView.class));
             routes.add(new AuthorizeRoutes("employee", "Employee", EmployeeView.class));
+            routes.add(new AuthorizeRoutes("vocation", "Vocation", VacationView.class));
+            routes.add(new AuthorizeRoutes("logout", "Logout", LogoutView.class));
 
+        }
+
+        if(roles.contains(Role.ADMIN)) {
+            routes.add(new AuthorizeRoutes("admin", "Admin", AdminView.class));
         }
 
         return routes;

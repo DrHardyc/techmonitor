@@ -1,25 +1,27 @@
 package ru.hardy.techmonitor.view;
 
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.provider.CallbackDataProvider;
-import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import ru.hardy.techmonitor.domain.Employee;
+import ru.hardy.techmonitor.domain.Role;
+import ru.hardy.techmonitor.domain.User;
 import ru.hardy.techmonitor.repo.EmployeeRepo;
+import ru.hardy.techmonitor.repo.UserRepo;
 import ru.hardy.techmonitor.service.EmployeeService;
 
-@Route("employee")
 public class EmployeeView extends VerticalLayout {
     private final EmployeeRepo employeeRepo;
-
+    private User user;
+    private UserRepo userRepo;
     private final EmployeeService employeeService;
 
     private Grid<Employee> employeeGrid = new Grid<>();
@@ -29,14 +31,15 @@ public class EmployeeView extends VerticalLayout {
 
     @Autowired
     public EmployeeView(EmployeeRepo employeeRepo, EmployeeService employeeService) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        user =  userRepo.findByUsername(auth.getName());
         this.employeeRepo = employeeRepo;
         this.employeeService = employeeService;
 
-        filter.setPlaceholder("Type to filter");
+        filter.setPlaceholder("Поиск");
         filter.setValueChangeMode(ValueChangeMode.EAGER);
         filter.addValueChangeListener(field -> fillList(field.getValue()));
 
-       // employeeGrid.removeColumnByKey("id");
         employeeGrid.addColumn(Employee::getSurname).setHeader("Фамилия");
         employeeGrid.addColumn(Employee::getName).setHeader("Имя");
         employeeGrid.addColumn(Employee::getPatronymic).setHeader("Отчество");
@@ -50,12 +53,14 @@ public class EmployeeView extends VerticalLayout {
 
         addNewButton.addClickListener(e -> employeeService.editEmployee(new Employee()));
 
-        employeeService.setChangeHandler(() -> {
-            employeeService.setVisible(false);
-            fillList(filter.getValue());
-        });
 
-        fillList("");
+        if (user.getRoles().contains(Role.ADMIN)) {
+            employeeService.setChangeHandler(() -> {
+                employeeService.setVisible(false);
+                fillList(filter.getValue());
+            });
+            fillList("");
+        };
     }
 
     private void fillList(String name) {

@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Data
@@ -16,7 +17,6 @@ public class Vacation {
     private LocalDate dateBegin;
     private LocalDate dateEnd;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_employee")
-    private Employee employee;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "vacation")
+    private Set<Employee> employee;
 }

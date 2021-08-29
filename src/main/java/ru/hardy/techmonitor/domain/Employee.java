@@ -18,8 +18,9 @@ public class Employee {
     private String surname;
     private String patronymic;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Vacation> vacation = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name = "id_vacation")
+    private Vacation vacation;
 
     @OneToOne(cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
