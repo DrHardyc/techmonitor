@@ -12,16 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import ru.hardy.techmonitor.domain.Employee;
-import ru.hardy.techmonitor.domain.Role;
-import ru.hardy.techmonitor.domain.User;
 import ru.hardy.techmonitor.repo.EmployeeRepo;
-import ru.hardy.techmonitor.repo.UserRepo;
 import ru.hardy.techmonitor.service.EmployeeService;
 
+@Route
 public class EmployeeView extends VerticalLayout {
     private final EmployeeRepo employeeRepo;
-    private User user;
-    private UserRepo userRepo;
     private final EmployeeService employeeService;
 
     private Grid<Employee> employeeGrid = new Grid<>();
@@ -31,8 +27,6 @@ public class EmployeeView extends VerticalLayout {
 
     @Autowired
     public EmployeeView(EmployeeRepo employeeRepo, EmployeeService employeeService) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        user =  userRepo.findByUsername(auth.getName());
         this.employeeRepo = employeeRepo;
         this.employeeService = employeeService;
 
@@ -43,7 +37,7 @@ public class EmployeeView extends VerticalLayout {
         employeeGrid.addColumn(Employee::getSurname).setHeader("Фамилия");
         employeeGrid.addColumn(Employee::getName).setHeader("Имя");
         employeeGrid.addColumn(Employee::getPatronymic).setHeader("Отчество");
-        employeeGrid.addColumn(Employee::getVacation).setHeader("Период отпуска");
+        //employeeGrid.addColumn(Employee::getVacation).setHeader("Период отпуска");
 
         add(toolbar, employeeGrid, employeeService);
 
@@ -53,8 +47,8 @@ public class EmployeeView extends VerticalLayout {
 
         addNewButton.addClickListener(e -> employeeService.editEmployee(new Employee()));
 
-
-        if (user.getRoles().contains(Role.ADMIN)) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ADMIN"))) {
             employeeService.setChangeHandler(() -> {
                 employeeService.setVisible(false);
                 fillList(filter.getValue());

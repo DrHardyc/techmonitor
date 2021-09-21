@@ -14,6 +14,7 @@ import ru.hardy.techmonitor.repo.EmployeeRepo;
 
 import java.util.List;
 
+@Route
 public class VacationView extends VerticalLayout {
     private EmployeeRepo employeeRepo;
 

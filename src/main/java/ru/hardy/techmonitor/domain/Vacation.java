@@ -17,6 +17,6 @@ public class Vacation {
     private LocalDate dateBegin;
     private LocalDate dateEnd;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "vacation")
-    private Set<Employee> employee;
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "vacation")
+//    private Set<Employee> employee;
 }

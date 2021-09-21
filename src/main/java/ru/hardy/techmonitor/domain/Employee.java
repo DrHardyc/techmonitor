@@ -18,11 +18,11 @@ public class Employee {
     private String surname;
     private String patronymic;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name = "id_vacation")
-    private Vacation vacation;
+//    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+//    @JoinColumn(name = "id_vacation")
+//    private Vacation vacation;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private User user;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @PrimaryKeyJoinColumn
+//    private User user;
 }
