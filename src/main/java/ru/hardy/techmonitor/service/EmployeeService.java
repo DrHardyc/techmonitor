@@ -2,17 +2,24 @@ package ru.hardy.techmonitor.service;
 
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.KeyNotifier;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.provider.CallbackDataProvider;
+import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import ru.hardy.techmonitor.domain.Employee;
 import ru.hardy.techmonitor.repo.EmployeeRepo;
+import ru.hardy.techmonitor.view.VacationView;
+
+import java.util.stream.Stream;
 
 @SpringComponent
 @UIScope
@@ -28,6 +35,7 @@ public class EmployeeService extends VerticalLayout implements KeyNotifier {
     private Button save = new Button("Сохранить");
     private Button cancel = new Button("Отмена");
     private Button delete = new Button("Удалить");
+
     private HorizontalLayout buttons = new HorizontalLayout(save, cancel, delete);
 
     private Binder<Employee> binder = new Binder<>(Employee.class);
