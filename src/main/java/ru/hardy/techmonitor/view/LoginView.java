@@ -27,8 +27,8 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     public LoginView() {
         login.setAction("login");
         login.setOpened(true);
-        login.setTitle("Spring Secured Vaadin");
-        login.setDescription("Login Overlay Example");
+        login.setTitle("TechMonitor");
+        login.setDescription("Введите имя пользователя и пароль");
         getElement().appendChild(login.getElement());
     }
 
