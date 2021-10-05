@@ -6,4 +6,5 @@ import ru.hardy.techmonitor.domain.User;
 
 public interface UserRepo extends JpaRepository<User, Long> {
     User findByUsername(String username);
+    User getByActivationCode(String activationCode);
 }

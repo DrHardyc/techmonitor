@@ -1,6 +1,7 @@
 package ru.hardy.techmonitor.domain;
 
 import lombok.Data;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,12 +18,23 @@ public class User implements UserDetails {
 
     private String username;
     private String password;
+    private String email;
+    private String activationCode;
+    private boolean active;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
-    private boolean active;
+
+    public User() {
+    }
+
+    public User(String username, String password, Role role) {
+        this.username = username;
+        this.password = password;
+        this.activationCode = RandomStringUtils.randomAlphanumeric(32);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
