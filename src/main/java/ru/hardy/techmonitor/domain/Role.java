@@ -1,7 +1,7 @@
 package ru.hardy.techmonitor.domain;
 
 public enum Role {
-    USER,
-    ADMIN,
+    ROLE_USER,
+    ROLE_ADMIN,
     test
 }
