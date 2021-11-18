@@ -27,13 +27,12 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    public User() {
+    public String getActivationCode(){
+        return this.activationCode = RandomStringUtils.randomAlphanumeric(32);
     }
 
-    public User(String username, String password, Role role) {
-        this.username = username;
-        this.password = password;
-        this.activationCode = RandomStringUtils.randomAlphanumeric(32);
+    public void setActivationCode(String activationCode){
+        this.activationCode = activationCode;
     }
 
     @Override

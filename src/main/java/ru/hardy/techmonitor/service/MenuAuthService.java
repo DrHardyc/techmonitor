@@ -18,44 +18,44 @@ import java.util.Set;
 
 @Service
 public class MenuAuthService {
-    public record AuthorizedRoute(String route, String name, Class<? extends Component> view) {
-
-    }
-
-    public class AuthException extends Exception {
-
-    }
-
-    private final UserRepo userRepository;
-
-    public MenuAuthService(UserRepo userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    private void createRoutes(Set<Role> role) {
-        getAuthorizedRoutes().stream()
-                .forEach(route ->
-                        RouteConfiguration.forSessionScope().setRoute(
-                                route.route, route.view, MainView.class));
-    }
-
-
-    public List<AuthorizedRoute> getAuthorizedRoutes() {
-
-        var routes = new ArrayList<AuthorizedRoute>();
-
-//        if (CheckRole().equals("USER")) {
-//            routes.add(new AuthorizedRoute("home", "Home", HomeView.class));
-//            routes.add(new AuthorizedRoute("logout", "Logout", LogoutView.class));
+//    public record AuthorizedRoute(String route, String name, Class<? extends Component> view) {
 //
-//        } else if (CheckRole().equals("ADMIN")) {
-//            routes.add(new AuthorizedRoute("home", "Home", HomeView.class));
-//            routes.add(new AuthorizedRoute("admin", "Admin", AdminView.class));
-//            routes.add(new AuthorizedRoute("logout", "Logout", LogoutView.class));
-//        }
-
-        return routes;
-    }
-
+//    }
+//
+//    public class AuthException extends Exception {
+//
+//    }
+//
+//    private final UserRepo userRepository;
+//
+//    public MenuAuthService(UserRepo userRepository) {
+//        this.userRepository = userRepository;
+//    }
+//
+//    private void createRoutes(Set<Role> role) {
+//        getAuthorizedRoutes().stream()
+//                .forEach(route ->
+//                        RouteConfiguration.forSessionScope().setRoute(
+//                                route.route, route.view, MainView.class));
+//    }
+//
+//
+//    public List<AuthorizedRoute> getAuthorizedRoutes() {
+//
+//        var routes = new ArrayList<AuthorizedRoute>();
+//
+////        if (CheckRole().equals("USER")) {
+////            routes.add(new AuthorizedRoute("home", "Home", HomeView.class));
+////            routes.add(new AuthorizedRoute("logout", "Logout", LogoutView.class));
+////
+////        } else if (CheckRole().equals("ADMIN")) {
+////            routes.add(new AuthorizedRoute("home", "Home", HomeView.class));
+////            routes.add(new AuthorizedRoute("admin", "Admin", AdminView.class));
+////            routes.add(new AuthorizedRoute("logout", "Logout", LogoutView.class));
+////        }
+//
+//        return routes;
+//    }
+//
 
 }

@@ -2,8 +2,15 @@ package ru.hardy.techmonitor.view;
 
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
@@ -22,14 +29,18 @@ import ru.hardy.techmonitor.security.CustomRequestCache;
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
     public static final String ROUTE = "login";
 
-    private LoginOverlay login = new LoginOverlay();
+    private final LoginForm login = new LoginForm();
+    Button register = new Button("Регистрация", event -> UI.getCurrent().navigate("register"));
 
-    public LoginView() {
+    public LoginView(){
+        addClassName("login-view");
+        setSizeFull();
+        setAlignItems(Alignment.CENTER);
+        setJustifyContentMode(JustifyContentMode.CENTER);
+
         login.setAction("login");
-        login.setOpened(true);
-        login.setTitle("TechMonitor");
-        login.setDescription("Введите имя пользователя и пароль");
-        getElement().appendChild(login.getElement());
+
+        add(new H1("ТехМонитор"), login, register);
     }
 
     @Override

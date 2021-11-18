@@ -5,7 +5,6 @@ import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -18,10 +17,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import ru.hardy.techmonitor.service.MenuAuthService;
 
+import javax.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route("")
+@Route("main")
+@PermitAll
 public class MainView extends AppLayout {
     private final Tabs menu;
     private H1 viewTitle;
@@ -95,10 +96,10 @@ public class MainView extends AppLayout {
     public List<String> CheckRole() {
         List<String> result = new ArrayList();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("USER"))) {
+        if (auth.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_USER"))) {
             result.add("USER");
         }
-        if (auth.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ADMIN"))) {
+        if (auth.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))) {
             result.add("ADMIN");
         }
         return result;

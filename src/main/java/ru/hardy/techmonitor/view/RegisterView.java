@@ -9,9 +9,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import ru.hardy.techmonitor.service.UserService;
 
+
 @Route("register")
+@AnonymousAllowed
 public class RegisterView extends Composite {
 
     private final UserService userService;
@@ -22,15 +25,18 @@ public class RegisterView extends Composite {
 
     @Override
     protected Component initContent() {
+        TextField email = new TextField("mail");
         TextField username = new TextField("Username");
         PasswordField password1 = new PasswordField("Password");
         PasswordField password2 = new PasswordField("Confirm password");
         return new VerticalLayout(
-                new H2("Register"),
+                new H2("Регистрация"),
+                email,
                 username,
                 password1,
                 password2,
-                new Button("Send", event -> register(
+                new Button("Отправить", event -> register(
+                        email.getValue(),
                         username.getValue(),
                         password1.getValue(),
                         password2.getValue()
@@ -38,16 +44,19 @@ public class RegisterView extends Composite {
         );
     }
 
-    private void register(String username, String password1, String password2) {
-        if (username.trim().isEmpty()) {
-            Notification.show("Enter a username");
+    private void register(String email, String username, String password1, String password2) {
+        if (email.trim().isEmpty()) {
+            Notification.show("Введите адрес электронной почты");
+        }
+        else if (username.trim().isEmpty()) {
+            Notification.show("Введите имя пользователя");
         } else if (password1.isEmpty()) {
-            Notification.show("Enter a password");
+            Notification.show("Введите пароль");
         } else if (!password1.equals(password2)) {
-            Notification.show("Passwords don't match");
+            Notification.show("Введите пароль еще раз");
         } else {
-            userService.addUser(username, password1);
-            Notification.show("Check your email.");
+            userService.addUser(email,username, password1);
+            Notification.show("Проверьте свой почтовый ящик.");
         }
     }
 }
