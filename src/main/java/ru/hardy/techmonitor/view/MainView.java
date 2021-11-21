@@ -15,21 +15,20 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import ru.hardy.techmonitor.service.MenuAuthService;
 
 import javax.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route("main")
+@Route("")
 @PermitAll
 public class MainView extends AppLayout {
     private final Tabs menu;
     private H1 viewTitle;
-    private MenuAuthService menuAuthService;
+//    private MenuAuthService menuAuthService;
 
-    public MainView(MenuAuthService menuAuthService) {
-        this.menuAuthService = menuAuthService;
+    public MainView() {
+//        this.menuAuthService = menuAuthService;
         setPrimarySection(Section.DRAWER);
         addToNavbar(true, createHeaderContent());
         menu = createMenu();
@@ -76,13 +75,21 @@ public class MainView extends AppLayout {
         tabs.setOrientation(Tabs.Orientation.VERTICAL);
         tabs.addThemeVariants(TabsVariant.LUMO_MINIMAL);
         tabs.setId("tabs");
+        //Что бы ссылки отображались в нужной последовательности
+        //первая ступень добавления ссылок
         if (CheckRole().contains("USER")) {
-            tabs.add(createTab("Home", HomeView.class));
-            tabs.add(createTab("Logout", LogoutView.class));
+            tabs.add(createTab("Main", MainView.class));
+            tabs.add(createTab("Employee", EmployeeView.class));
         }
+        //Вторя ступень ссылок
         if (CheckRole().contains("ADMIN")) {
             tabs.add(createTab("Admin", AdminView.class));
         }
+        //Третья ступень ссылок
+        if (CheckRole().contains("USER")) {
+            tabs.add(createTab("Logout", LogoutView.class));
+        }
+
         return tabs;
     }
 

@@ -18,7 +18,10 @@ import ru.hardy.techmonitor.domain.Employee;
 import ru.hardy.techmonitor.repo.EmployeeRepo;
 import ru.hardy.techmonitor.service.EmployeeService;
 
-@Route
+import javax.annotation.security.PermitAll;
+
+@Route("employee")
+@PermitAll
 public class EmployeeView extends VerticalLayout {
     private final EmployeeRepo employeeRepo;
     private final EmployeeService employeeService;
@@ -44,7 +47,6 @@ public class EmployeeView extends VerticalLayout {
         employeeGrid.addColumn(Employee::getSurname).setHeader("Фамилия");
         employeeGrid.addColumn(Employee::getName).setHeader("Имя");
         employeeGrid.addColumn(Employee::getPatronymic).setHeader("Отчество");
-        //employeeGrid.addColumn(Employee::getVacation).setHeader("Период отпуска");
 
         add(toolbar, employeeGrid, employeeService, toVacation);
 

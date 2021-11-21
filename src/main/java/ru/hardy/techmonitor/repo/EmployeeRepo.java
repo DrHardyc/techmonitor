@@ -14,5 +14,5 @@ public interface EmployeeRepo extends JpaRepository<Employee, Long> {
             "   concat(e.surname, ' ', e.patronymic, ' ', e.name) like concat('%', :name, '%')")
     List<Employee> findByName(@Param("name") String name);
 
-    int countByName(@Param("name") String name);
+//    int countByName(@Param("name") String name);
 }

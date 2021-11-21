@@ -16,9 +16,12 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import ru.hardy.techmonitor.domain.Employee;
+import ru.hardy.techmonitor.domain.Vacation;
 import ru.hardy.techmonitor.repo.EmployeeRepo;
 import ru.hardy.techmonitor.view.VacationView;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Stream;
 
 @SpringComponent
@@ -95,5 +98,12 @@ public class EmployeeService extends VerticalLayout implements KeyNotifier {
         setVisible(true);
 
         surname.focus();
+    }
+
+    public void addVacation(Employee employee, Vacation vacation) {
+        Set<Vacation> vacations = new HashSet<>();
+        vacations.add(vacation);
+        employee.setVacation(vacations);
+        employeeRepo.save(employee);
     }
 }
