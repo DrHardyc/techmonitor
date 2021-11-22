@@ -1,30 +1,35 @@
 package ru.hardy.techmonitor.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
-@Data
 public class Employee {
 
+    @Getter
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(mappedBy = "employee")
-    @EqualsAndHashCode.Exclude
-    private Set<Vacation> vacation;
+    @Getter
+    @Setter
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Vacation> vacations;
 
-    private String name;
-    private String surname;
+    @Getter
+    @Setter
+    private String firstName;
+
+    @Getter
+    @Setter
+    private String lastName;
+
+    @Getter
+    @Setter
     private String patronymic;
-
-
-
 }

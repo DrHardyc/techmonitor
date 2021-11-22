@@ -20,7 +20,9 @@ import ru.hardy.techmonitor.domain.Vacation;
 import ru.hardy.techmonitor.repo.EmployeeRepo;
 import ru.hardy.techmonitor.view.VacationView;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -31,9 +33,9 @@ public class EmployeeService extends VerticalLayout implements KeyNotifier {
 
     private Employee employee;
 
-    private TextField name = new TextField("", "Имя");
-    private TextField surname = new TextField("", "Фамилия");
-    private TextField patronymic = new TextField("", "Отчество");
+    private final TextField firstName = new TextField("", "Имя");
+    private final TextField lastName = new TextField("", "Фамилия");
+    private final TextField patronymic = new TextField("", "Отчество");
 
     private Button save = new Button("Сохранить");
     private Button cancel = new Button("Отмена");
@@ -54,7 +56,7 @@ public class EmployeeService extends VerticalLayout implements KeyNotifier {
     public EmployeeService(EmployeeRepo employeeRepo) {
         this.employeeRepo = employeeRepo;
 
-        add(surname, name, patronymic, buttons);
+        add(lastName, firstName, patronymic, buttons);
 
         binder.bindInstanceFields(this);
 
@@ -97,13 +99,11 @@ public class EmployeeService extends VerticalLayout implements KeyNotifier {
 
         setVisible(true);
 
-        surname.focus();
+        lastName.focus();
     }
 
     public void addVacation(Employee employee, Vacation vacation) {
-        Set<Vacation> vacations = new HashSet<>();
-        vacations.add(vacation);
-        employee.setVacation(vacations);
+        employee.getVacations().add(vacation);
         employeeRepo.save(employee);
     }
 }

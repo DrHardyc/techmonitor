@@ -24,12 +24,10 @@ import javax.annotation.security.PermitAll;
 @PermitAll
 public class EmployeeView extends VerticalLayout {
     private final EmployeeRepo employeeRepo;
-    private final EmployeeService employeeService;
 
-    private Grid<Employee> employeeGrid = new Grid<>();
+    private final Grid<Employee> employeeGrid = new Grid<>();
     private final TextField filter = new TextField();
     private final Button addNewButton = new Button("Новый сотрудник", VaadinIcon.PLUS.create());
-    private Button toVacation = new Button("Детали");
     private final HorizontalLayout toolbar = new HorizontalLayout(filter, addNewButton);
 
     private Long empID;
@@ -37,28 +35,25 @@ public class EmployeeView extends VerticalLayout {
     @Autowired
     public EmployeeView(EmployeeRepo employeeRepo, EmployeeService employeeService) {
         this.employeeRepo = employeeRepo;
-        this.employeeService = employeeService;
 
         filter.setPlaceholder("Поиск");
         filter.setValueChangeMode(ValueChangeMode.EAGER);
 
         filter.addValueChangeListener(field -> fillList(field.getValue()));
 
-        employeeGrid.addColumn(Employee::getSurname).setHeader("Фамилия");
-        employeeGrid.addColumn(Employee::getName).setHeader("Имя");
+        employeeGrid.addColumn(Employee::getLastName).setHeader("Фамилия");
+        employeeGrid.addColumn(Employee::getFirstName).setHeader("Имя");
         employeeGrid.addColumn(Employee::getPatronymic).setHeader("Отчество");
 
-        add(toolbar, employeeGrid, employeeService, toVacation);
+        add(toolbar, employeeGrid, employeeService);
 
         employeeGrid
                 .asSingleSelect()
-                .addValueChangeListener(e -> employeeService.editEmployee(e.getValue()));
-
-        employeeGrid
-                .asSingleSelect()
-                .addValueChangeListener(e -> changeEmpID(e.getValue().getId()));
-
-        toVacation.addClickListener(e -> UI.getCurrent().getPage().
+                .addValueChangeListener(e -> {
+                    employeeService.editEmployee(e.getValue());
+                    changeEmpID(e.getValue().getId());
+                });
+        employeeGrid.addItemDoubleClickListener(e -> UI.getCurrent().getPage().
                 setLocation("vacation/" + empID + "/details"));
 
         addNewButton.addClickListener(e -> employeeService.editEmployee(new Employee()));
@@ -69,6 +64,12 @@ public class EmployeeView extends VerticalLayout {
         });
 
         fillList("");
+
+
+
+
+
+
     }
 
     private void changeEmpID(Long empID) {
